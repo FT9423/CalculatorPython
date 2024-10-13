@@ -1,1 +1,1 @@
-# Calculator -- GUI
+# Calculator App -- GUI
