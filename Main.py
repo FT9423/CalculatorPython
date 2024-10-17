@@ -1,10 +1,5 @@
 # Calculator App -- GUI
 
-# addition = a + b:
-# subtraction = a - b:
-# multiplication = a * b:
-# division = a / b:
-
 def add(a,b):
     newNum = a + b
     if newNum % 1 == 0:
