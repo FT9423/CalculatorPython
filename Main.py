@@ -1,106 +1,76 @@
 # Calculator App -- GUI
 
-def add(a,b):
-    newNum = a + b
-    if newNum % 1 == 0:
-        newNum = int(newNum)
-    else: newNum = float(newNum)
+from decimal import Decimal, getcontext, InvalidOperation
 
-    return(newNum)
+# Set the precision
+getcontext().prec = 28
 
-def subtract(a,b):
-    newNum = a - b
-    if newNum % 1 == 0:
-        newNum = int(newNum)
-    else: newNum = float(newNum)
+# Arithmetic operation
+def add(x, y):
+    return Decimal(x) + Decimal(y)
+def subtract(x, y):
+    return Decimal(x) - Decimal(y)
+def multiply(x, y):
+    return Decimal(x) * Decimal(y)
+def divide(x, y):
+    if Decimal(y) == 0:
+        raise ValueError("Cannot divide by zero")
+    return Decimal(x) / Decimal(y)
 
-    return(newNum)
-
-
-def multiply(a,b):
-    newNum = a * b
-    if newNum % 1 == 0:
-        newNum = int(newNum)
-    else: newNum = float(newNum)
-
-    return(newNum)
-
-
-def divide(a,b):
-    newNum = a / b
-    if newNum % 1 == 0:
-        newNum = int(newNum)
-    else: newNum = float(newNum)
-
-    return(newNum)
-
-def addNum (num,num2):
-    if num % 1 == 0:
-        num = int(num)
-    else: num = float(num)
-    if num2 % 1 == 0:
-        num2 = int(num2)
-    else: num2 = float(num2)
-
-    print((num), '+', (num2), '=', add(num,num2))
-
-def subNum (num,num2):
-    if num % 1 == 0:
-        num = int(num)
-    else: num = float(num)
-    if num2 % 1 == 0:
-        num2 = int(num2)
-    else: num2 = float(num2)
-
-    print((num), '-', (num2), '=', subtract(num,num2))
-
-def mulNum (num,num2):
-    if num % 1 == 0:
-        num = int(num)
-    else: num = float(num)
-    if num2 % 1 == 0:
-        num2 = int(num2)
-    else: num2 = float(num2)
-
-    print((num), '*', (num2), '=', multiply(num,num2))
-
-def divNum (num,num2):
-    if num % 1 == 0:
-        num = int(num)
-    else: num = float(num)
-    if num2 % 1 == 0:
-        num2 = int(num2)
-    else: num2 = float(num2)
-
-    print((num), '/', (num2), '=', divide(num,num2))
-
-while True:
+# Main calculator function
+def calculator():
     print ('Choose a mathematical operation:')
     print ('1. Addition')
     print ('2. Subtraction')
     print ('3. Multiplication')
     print ('4. Division')
-    print ('5. Exit')
+    print ('Enter "q" at any point to quit application')
 
-    Operation = input('Select option 1-5 \n')
 
-    if Operation in ('1','2','3','4','5'):
-        if Operation == '5':
-            break
+    while True:
         try:
-            num = float(input('Enter first number for the equation \n'))
-            num2 = float(input('Enter second number for the equation \n'))
-        except ValueError:
-            print ('Please enter a whole or decimal number to proceed with the operation')
-            continue
+            operation = input("Select operation 1,2,3,4 : ")
+            if operation.lower() == 'q':
+                break
+            num1 = input("Enter first number: ")
+            if num1.lower() == 'q':
+                break
+            num2 = input("Enter second number: ")
+            if num2.lower() == 'q':
+                break
 
-        if Operation == '1':
-            addNum(num,num2)
-        elif Operation == '2':
-            subNum(num,num2)
-        elif Operation == '3':
-            mulNum(num,num2)
-        elif Operation == '4':
-            divNum(num,num2)
-    else:
-        print('Invalid Input.')
+
+            # Convert inputs to Decimal and perform the chosen operation
+            try:
+                num1 = Decimal(num1)
+                num2 = Decimal(num2)
+            except (ValueError, InvalidOperation):
+                print("Invalid input. Please enter numeric values.")
+                continue
+
+            # Perform the chosen operation
+            if operation == '1':
+                result = add(num1, num2)
+            elif operation == '2':
+                result = subtract(num1, num2)
+            elif operation == '3':
+                result = multiply(num1, num2)
+            elif operation == '4':
+                result = divide(num1, num2)
+            else:
+                print("Invalid operation.")
+                continue
+
+            # Check if the result is a whole number and display accordingly
+            if result == result.to_integral_value():
+                print(f"Result: {int(result)}") # Display as an integer
+            else:
+                print(f"Result: {result}")
+
+        except ValueError as e:
+            print(f"Error: {e}")
+
+#Run the Calculator
+calculator()
+
+
